@@ -1,6 +1,4 @@
-
-
-import { Search, FileDown, MoreHorizontal, Filter } from "lucide-react";
+import { Search, FileDown, MoreHorizontal, Filter, Plus } from "lucide-react";
 import { Header } from "./components/header";
 import { Button } from "./components/ui/button";
 import { Tabs } from "./components/tabs";
@@ -10,6 +8,8 @@ import { Pagination } from "./components/pagination";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { CreateTagForm } from "./components/create-tag-form";
 
 export interface TagResponse {
   first: number
@@ -25,6 +25,8 @@ export interface Tag {
   title: string
   amountOfVideos: number
   id: string
+  slug: string
+  
 }
 
 
@@ -61,32 +63,47 @@ export function App() {
   return (
     <div className="py-10 space-y-8">
       <div>
-        <Header/>
-        <Tabs/>
+        <Header />
+        <Tabs />
       </div>
       <main className="max-w-6xl mx-auto space-y-5">
         <div className="flex items-center gap-3">
           <h1 className="text-xl font-bold">Tags</h1>
-          <Button variant='primary'></Button>
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <Button variant="primary">
+                <Plus className="size-3" />
+                Create new
+              </Button>
+            </Dialog.Trigger>
+            <Dialog.Portal>
+              <Dialog.Overlay className="fixed inset-0 bg-black/70" />
+              <Dialog.Content className="fixed space-y-10 p-10 right-0 top-0 bottom-0 h-screen min-w-[320px] bg-zinc-950 border-l border-zinc-900">
+                <div className="space-y-3">
+                  <Dialog.Title className="text-xl font-bold">Create tag</Dialog.Title>
+                  <Dialog.Description className="text-sm text-zinc-500">
+                    Tags can be used to group videos about similar concepts
+                  </Dialog.Description>
+                </div>
+                <CreateTagForm/>
+                <Dialog.Close />
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Input variant='filter'>
-              <Search className="size-3"/>
-              <Control 
-                placeholder="Search tags..."
-                onChange={e=>setFilter(e.target.value)}
-                value={filter}
-              />
-            
+            <Input variant="filter">
+              <Search className="size-3" />
+              <Control placeholder="Search tags..." onChange={(e) => setFilter(e.target.value)} value={filter} />
             </Input>
             <Button onClick={handleFilterClick}>
               <Filter className="size-3" />
               Filter
             </Button>
           </div>
-          <Button >
+          <Button>
             <FileDown className="size-3" />
             Export
           </Button>
@@ -102,31 +119,34 @@ export function App() {
             </TableRow>
           </TableHeader>
           <TableBody>
-           {tagsResponse && tagsResponse.data.length > 0 ? tagsResponse.data.map((tag)=> {
-            return (
-              <TableRow key={tag.id}>
-                <TableCell></TableCell>
-                <TableCell>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="font-medium">{tag.title}</span>
-                    <span className="text-xs text-zinc-500">{tag.id}</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-zinc-500">
-                  {tag.amountOfVideos}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button size="icon">
-                    <MoreHorizontal className="size-4"/>
-                  </Button>
-                </TableCell>
-            </TableRow>
-           )}): <h1 className="font-medium"> Sem registros</h1>}
+            {tagsResponse && tagsResponse.data.length > 0 ? (
+              tagsResponse.data.map((tag) => {
+                return (
+                  <TableRow key={tag.id}>
+                    <TableCell></TableCell>
+                    <TableCell>
+                      <div className="flex flex-col gap-0.5">
+                        <span className="font-medium">{tag.title}</span>
+                        <span className="text-xs text-zinc-500">{tag.slug}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-zinc-500">{tag.amountOfVideos}</TableCell>
+                    <TableCell className="text-right">
+                      <Button size="icon">
+                        <MoreHorizontal className="size-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <h1 className="font-medium"> Sem registros</h1>
+            )}
           </TableBody>
         </Table>
-        {tagsResponse &&  <Pagination pages={tagsResponse.pages} items={tagsResponse.items} page={page}/>}
+        {tagsResponse && <Pagination pages={tagsResponse.pages} items={tagsResponse.items} page={page} />}
       </main>
     </div>
-  )
+  );
 }
 
