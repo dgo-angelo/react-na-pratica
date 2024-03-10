@@ -1,9 +1,8 @@
 <p align="left">
 
-  <img src="https://img.shields.io/static/v1?label=Expo&message=platform&color=blue&style=for-the-badge&logoColor=white&logo=expo"/>
   <img src="https://img.shields.io/static/v1?label=Typescript&message=language&color=red&style=for-the-badge&logo=typescript"/>
 
-  <img src="https://img.shields.io/static/v1?label=react native&message=framework&color=yellow&style=for-the-badge&logo=react"/>
+  <img src="https://img.shields.io/static/v1?label=react&message=library&color=yellow&style=for-the-badge&logo=react"/>
 
 </p>
 
