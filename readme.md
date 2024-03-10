@@ -41,6 +41,7 @@ Desenvolvimento de uma aplicação para categorização de videos com tags simil
 ## :bookmark_tabs: Funcionalidades
 
 :white_check_mark: Listagem com Filtro
+
 :white_check_mark: Criação
 
 ## :sunrise_over_mountains: Imagens
@@ -60,7 +61,7 @@ Desenvolvimento de uma aplicação para categorização de videos com tags simil
 - No terminal, clone o projeto:
 
   ```
-  https://github.com/dgo-angelo/react-na-patica.git
+  https://github.com/dgo-angelo/react-na-pratica.git
   ```
 
 ### :arrow_forward: Executando a aplicação
